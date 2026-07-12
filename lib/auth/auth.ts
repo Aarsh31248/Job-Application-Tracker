@@ -1,19 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import connectDB from "../db";
-import { MongoClient } from "mongodb";
 import { initializeUserBoard } from "../init-user-board";
 
 
-const mongooseInstance = await connectDB();
+const mongooseInstance = await connectDB(); 
 const client = mongooseInstance.connection.getClient();
 const db = client.db();
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db, {
-    client,
+  database: mongodbAdapter(db as any, {
+    client: client as any,
   }),
   session: {
     cookieCache: {
