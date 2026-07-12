@@ -122,7 +122,7 @@ export default function CreateJobApplicationDialog({
                 <Label htmlFor="salary">Salary</Label>
                 <Input
                   id="salary"
-                  placeholder="e.g., $100k - $150k"
+                  placeholder="e.g., ₹6 LPA - ₹10 LPA"
                   value={formData.salary}
                   onChange={(e) =>
                     setFormData({ ...formData, salary: e.target.value })
