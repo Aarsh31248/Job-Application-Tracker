@@ -4,7 +4,6 @@ import { Board } from "@/lib/models";
 import { redirect } from "next/navigation";
 import KanbanBoard from "@/components/kanban-board";
 import { Suspense } from "react";
-import { Loader2 } from "lucide-react";
 import Loader from "@/components/Loader";
 
 async function getBoard(userId: string) {

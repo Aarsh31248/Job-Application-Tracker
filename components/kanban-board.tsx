@@ -6,7 +6,6 @@ import {
   Calendar,
   CheckCircle2,
   Mic,
-  MoreHorizontal,
   MoreVertical,
   Trash2,
   XCircle,
@@ -96,7 +95,7 @@ function DroppableColumn({
   const sortedJobs =
     column.jobApplications?.sort((a, b) => a.order - b.order) || [];
   return (
-    <Card className="min-w-75 shrink-0 shadow-md p-0">
+    <Card className="w-75 min-w-75 max-w-75 shrink-0 overflow-hidden p-0 shadow-md">
       <CardHeader
         className={`${config.color} text-white rounded-t-lg pb-3 pt-3`}
       >
@@ -129,7 +128,7 @@ function DroppableColumn({
 
       <CardContent
         ref={setNodeRef}
-        className={`space-y-2 pt-4 bg-gray-50/50 min-h-100 rounded-b-lg ${
+        className={`min-h-100 min-w-0 rounded-b-lg bg-gray-50/50 pt-3 ${
           isOver ? "ring-2 ring-blue-500" : ""
         }`}
       >
@@ -137,13 +136,18 @@ function DroppableColumn({
           items={sortedJobs.map((job) => job._id)}
           strategy={verticalListSortingStrategy}
         >
-          {sortedJobs.map((job, key) => (
-            <SortableJobCard
-              key={key}
-              job={{ ...job, columnId: job.columnId || column._id }}
-              columns={sortedColumns}
-            />
-          ))}
+          <div className="space-y-3 px-0.5 py-1">
+            {sortedJobs.map((job) => (
+              <SortableJobCard
+                key={job._id}
+                job={{
+                  ...job,
+                  columnId: job.columnId || column._id,
+                }}
+                columns={sortedColumns}
+              />
+            ))}
+          </div>
         </SortableContext>
 
         <CreateJobApplicationDialog columnId={column._id} boardId={boardId} />
@@ -180,7 +184,11 @@ function SortableJobCard({
     opacity: isDragging ? 0.5 : 1,
   };
   return (
-    <div ref={setNodeRef} style={style}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="min-w-0 max-w-full overflow-hidden"
+    >
       <JobApplicationCard
         job={job}
         columns={columns}
@@ -190,7 +198,7 @@ function SortableJobCard({
   );
 }
 
-export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
+export default function KanbanBoard({ board }: KanbanBoardProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const { columns, moveJob } = useBoard(board);
 
@@ -201,7 +209,7 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
       activationConstraint: {
         distance: 8,
       },
-    })
+    }),
   );
 
   async function handleDragStart(event: DragStartEvent) {
@@ -254,13 +262,13 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
       newOrder = jobsInTarget.length;
     } else if (targetJob) {
       const targetJobColumn = sortedColumns.find((col) =>
-        col.jobApplications.some((j) => j._id === targetJob._id)
+        col.jobApplications.some((j) => j._id === targetJob._id),
       );
       targetColumnId = targetJob.columnId || targetJobColumn?._id || "";
       if (!targetColumnId) return;
 
       const targetColumnObj = sortedColumns.find(
-        (col) => col._id === targetColumnId
+        (col) => col._id === targetColumnId,
       );
 
       if (!targetColumnObj) return;
@@ -272,11 +280,11 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
         allJobsInTargetOriginal.filter((j) => j._id !== activeId) || [];
 
       const targetIndexInOriginal = allJobsInTargetOriginal.findIndex(
-        (j) => j._id === overId
+        (j) => j._id === overId,
       );
 
       const targetIndexInFiltered = allJobsInTargetFiltered.findIndex(
-        (j) => j._id === overId
+        (j) => j._id === overId,
       );
 
       if (targetIndexInFiltered !== -1) {
@@ -308,6 +316,7 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
     .find((job) => job._id === activeId);
   return (
     <DndContext
+      id="job-application-kanban"
       sensors={sensors}
       collisionDetection={closestCorners}
       onDragStart={handleDragStart}
@@ -322,7 +331,7 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
             };
             return (
               <DroppableColumn
-                key={key}
+                key={col._id}
                 column={col}
                 config={config}
                 boardId={board._id}

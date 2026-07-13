@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Edit2, ExternalLink, MoreVertical, Plus, Trash2 } from "lucide-react";
+import { Edit2, ExternalLink, MoreVertical, Trash2 } from "lucide-react";
 import { JobApplication, Column } from "@/lib/models/models.types";
 import {
   deleteJobApplication,
@@ -94,27 +94,29 @@ export default function JobApplicationCard({
   return (
     <>
       <Card
-        className="cursor-pointer transition-shadow hover:shadow-lg bg-white group shadow-sm"
+        className="group w-full min-w-0 max-w-full cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-[box-shadow,border-color] duration-200 hover:border-gray-300 hover:shadow-md"
         {...dragHandleProps}
       >
-        <CardContent className="p-4">
+        <CardContent className="min-w-0 max-w-full overflow-hidden p-4">
           <div className="flex items-start justify-between gap-2">
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-sm mb-1">{job.position}</h3>
-              <p className="text-xs text-muted-foreground mb-2">
+            <div className="min-w-0 max-w-full flex-1 overflow-hidden">
+              <h3 className="mb-1 max-w-full break-all text-sm font-semibold">
+                {job.position}
+              </h3>
+              <p className="mb-2 max-w-full break-all text-xs text-muted-foreground">
                 {job.company}
               </p>
               {job.description && (
-                <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
+                <p className="mb-2 max-w-full break-all text-xs text-muted-foreground line-clamp-2">
                   {job.description}
                 </p>
               )}
               {job.tags && job.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-2">
+                <div className="mb-2 flex min-w-0 max-w-full flex-wrap gap-1 overflow-hidden">
                   {job.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
+                      className="max-w-full break-all rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700"
                     >
                       {tag}
                     </span>
